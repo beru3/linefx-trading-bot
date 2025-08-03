@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(npm install)",
+      "Bash(npx playwright install:*)",
+      "Bash(npm test)",
+      "Bash(rmdir:*)",
+      "Bash(del package.json package-lock.json)",
+      "Bash(del README.md run_bot.bat run_bot.ps1 quick_test.bat)",
+      "Bash(rm:*)",
+      "Bash(cp:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(tree:*)"
+    ],
+    "deny": []
+  }
+}
