@@ -1,0 +1,129 @@
+{
+  "login": {
+    "url": "https://line-fx.com/signin?redirectUrl=%2F&channel=31",
+    "userId": "YOUR_USER_ID_HERE",
+    "password": "YOUR_PASSWORD_HERE",
+    "saveUserId": false
+  },
+  "selectors": {
+    "userId": [
+      "input[name='userId']",
+      ".TextInputField_field__P5GQG[name='userId']",
+      "input[placeholder='ユーザーIDの入力']"
+    ],
+    "password": [
+      "input[name='password']",
+      ".TextInputField_field__P5GQG[name='password']",
+      "input[placeholder='パスワードの入力']"
+    ],
+    "loginButton": [
+      "button[type='submit']",
+      ".Button_footerBtn__3BhuI",
+      ".SigninInput_btn__2bkqr"
+    ],
+    "saveUserIdCheckbox": [
+      "input[name='saveUserId']",
+      "#saveUserId"
+    ],
+    "trading": {
+      "newOrderMenu": [
+        "li a[href*='新規注文'], li a:nth-child(1)",
+        ".navbar-menu li:first-child ul li:first-child a",
+        "ul li a"
+      ],
+      "closeOrderMenu": [
+        "li a[href*='決済注文'], li a:nth-child(2)",
+        ".navbar-menu li:first-child ul li:nth-child(2) a"
+      ],
+      "orderButton": [
+        ".button:has-text('注文')",
+        "button[class*='button']"
+      ],
+      "bidButton": [
+        "td[pq-col-indx='2'] .button",
+        ".pq-grid-cell.col-rate .button:first-child",
+        ".col-rate .button"
+      ],
+      "askButton": [
+        "td[pq-col-indx='4'] .button", 
+        ".pq-grid-cell.col-rate .button:last-child",
+        ".col-rate .button"
+      ],
+      "currencyPair": [
+        ".col-symbol",
+        ".pq-grid-cell.col-symbol",
+        "td[pq-col-indx='1']"
+      ],
+      "positionSummary": [
+        ".navbar-menu li a",
+        "ul li a"
+      ],
+      "positionList": [
+        ".navbar-menu li a",
+        "ul li a"
+      ],
+      "tradeMenu": [
+        ".group-label",
+        ".navbar-menu-li .group-label",
+        "li .group-label"
+      ],
+      "rateTable": [
+        ".pq-grid-table",
+        ".pq-grid-area"
+      ]
+    }
+  },
+  "bot_settings": {
+    "headless": false,
+    "timeout": 30000,
+    "wait_time": {
+      "min": 1000,
+      "max": 3000,
+      "random_variance": 0.3
+    },
+    "typing_delay": {
+      "min": 80,
+      "max": 120
+    },
+    "screenshot_enabled": true,
+    "logging_enabled": true,
+    "debug_mode": true
+  },
+  "browser_settings": {
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "extra_args": [
+      "--no-first-run",
+      "--no-default-browser-check",
+      "--disable-dev-shm-usage",
+      "--disable-extensions",
+      "--no-sandbox",
+      "--disable-blink-features=AutomationControlled"
+    ]
+  },
+  "paths": {
+    "screenshots": "debug",
+    "logs": "logs",
+    "data": "data"
+  },
+  "data_source": {
+    "type": "csv",
+    "excel": {
+      "file_path": "data/trade_schedule.xlsx",
+      "auto_reload": true,
+      "reload_interval_minutes": 5
+    },
+    "csv": {
+      "file_path": "data/trade_schedule.csv",
+      "encoding": "utf-8-sig"
+    },
+    "google_sheets": {
+      "spreadsheet_id": "YOUR_SPREADSHEET_ID_HERE",
+      "sheet_name": "Trade Schedule",
+      "credentials_file": "config/google_credentials.json"
+    }
+  }
+}

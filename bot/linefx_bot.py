@@ -53,8 +53,13 @@ class LineFXBot:
                 self.settings = json.load(f)
             self.logger.info("設定ファイルを正常に読み込みました")
             
+            # trading_settings.jsonも読み込み
+            from data_reader import load_trading_settings
+            config_dir = os.path.dirname(self.config_path)
+            self.trading_config = load_trading_settings(config_dir)
+            
             # データリーダーを初期化
-            self.data_reader = DataReaderFactory.create_reader(self.settings)
+            self.data_reader = DataReaderFactory.create_reader(self.settings, self.trading_config)
             self.schedule_manager = TradeScheduleManager(self.data_reader)
             
         except Exception as e:
@@ -255,7 +260,7 @@ class LineFXBot:
             await self.take_screenshot("06_trading_page_analysis")
             
             # HTML構造を保存
-            if self.settings["trading_settings"]["save_html_structure"]:
+            if self.trading_config.get("save_html_structure", False):
                 html_content = await self.page.content()
                 html_dir = self.base_path / "debug"
                 html_file = html_dir / f"trading_page_{int(time.time())}.html"
@@ -384,7 +389,8 @@ class LineFXBot:
     async def place_order(self, order_type: str, amount: float = None, currency_pair: str = None):
         """注文を出す（改良版）"""
         try:
-            currency_pair = currency_pair or self.settings["trading_settings"]["default_currency_pair"]
+            if not currency_pair:
+                raise ValueError("通貨ペアが指定されていません。安全のため処理を停止します。")
             
             # レート表から直接注文
             await self.place_order_from_rate_table(currency_pair, order_type)
@@ -621,7 +627,7 @@ class LineFXBot:
 
     async def main_trading_loop(self):
         """メイン取引ループ（スケジュールベース）"""
-        check_interval = self.settings.get('trading_settings', {}).get('check_interval', 30)
+        check_interval = self.trading_config.get('check_interval', 30)
         
         while self.running:
             try:
@@ -634,7 +640,7 @@ class LineFXBot:
                     continue
                 
                 # エントリー対象のトレードをチェック
-                tolerance_minutes = self.settings.get('trading_settings', {}).get('time_tolerance_minutes', 1)
+                tolerance_minutes = self.trading_config.get('time_tolerance_minutes', 1)
                 
                 # エントリー対象
                 entry_trades = self.schedule_manager.get_trades_for_time(current_time, tolerance_minutes)

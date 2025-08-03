@@ -49,8 +49,9 @@ debug/
 *.xls
 
 # Configuration files with sensitive data
-# config/settings.json
-# config/trading_settings.json
+# 機密情報
+config/settings.json
+config/google_credentials.json
 
 # OS
 .DS_Store
