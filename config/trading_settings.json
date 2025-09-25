@@ -4,8 +4,8 @@
   "save_html_structure": true,
   "position_check_interval": 5000,
   "max_positions": 5,
-  "check_interval": 30,
-  "time_tolerance_minutes": 1,
+  "check_interval": 1,
+  "time_tolerance_seconds": 15,
   "risk_management": {
     "max_loss_per_trade": 1000,
     "stop_loss_enabled": false,

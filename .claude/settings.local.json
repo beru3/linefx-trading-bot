@@ -12,7 +12,15 @@
       "Bash(cp:*)",
       "Bash(ls:*)",
       "Bash(find:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(powershell:*)",
+      "Bash(test_trading.bat)",
+      "Bash(cmd /c:*)",
+      "Bash(python:*)",
+      "Bash(dir:*)",
+      "Bash(call venvScriptsactivate.bat)",
+      "Bash(del \"C:\\Users\\beru\\Dropbox\\006_TRADE\\app\\LINEFX\\test_environment.bat\")",
+      "Bash(taskkill:*)"
     ],
     "deny": []
   }

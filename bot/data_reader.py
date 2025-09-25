@@ -406,6 +406,8 @@ class CSVDataReader(DataReader):
             
             # CSVに書き戻し
             backup_file = self.file_path.replace('.csv', '_backup.csv')
+            if os.path.exists(backup_file):
+                os.remove(backup_file)
             os.rename(self.file_path, backup_file)
             
             # エンコーディングを決定（BOM付きの場合は維持）
@@ -686,7 +688,7 @@ class TradeScheduleManager:
             self.logger.error(f"データ読み込みエラー: {e}")
             return False
     
-    def get_trades_for_time(self, current_time: datetime, tolerance_minutes: int = 1) -> List[Dict]:
+    def get_trades_for_time(self, current_time: datetime, tolerance_seconds: int = 15) -> List[Dict]:
         """指定時間のエントリー対象トレードを取得"""
         target_trades = []
         
@@ -698,26 +700,24 @@ class TradeScheduleManager:
             if not entry_time:
                 continue
             
-            time_diff = abs((current_time - entry_time).total_seconds() / 60)
-            if time_diff <= tolerance_minutes:
+            time_diff = (current_time - entry_time).total_seconds()
+            if 0 <= time_diff <= tolerance_seconds:
                 target_trades.append(trade)
         
         return target_trades
     
-    def get_trades_to_close(self, current_time: datetime, tolerance_minutes: int = 1) -> List[Dict]:
-        """指定時間の決済対象トレードを取得"""
+    def get_trades_to_close(self, current_time: datetime, tolerance_seconds: int = 15) -> List[Dict]:
+        """指定時間の決済対象トレードを取得（メモリベース実行管理対応）"""
         target_trades = []
         
         for trade in self.trades_data:
-            if not trade.get('executed', False) or trade.get('closed', False):
-                continue
-            
+            # メモリベースの実行管理では、CSVフラグは無視して時刻のみでチェック
             exit_time = trade.get('exit_time')
             if not exit_time:
                 continue
             
-            time_diff = abs((current_time - exit_time).total_seconds() / 60)
-            if time_diff <= tolerance_minutes:
+            time_diff = (current_time - exit_time).total_seconds()
+            if 0 <= time_diff <= tolerance_seconds:
                 target_trades.append(trade)
         
         return target_trades
